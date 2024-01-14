@@ -1,0 +1,9 @@
+{
+    "id": "@APP_ID@",
+    "title": "downgr8",
+    "main": "@MAIN@",
+    "type": "native",
+    "icon": "icon_80x80.png",
+    "iconColor": "#2060b0",
+    "version": "@VERSION@"
+}

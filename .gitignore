@@ -1,0 +1,4 @@
+.vscode/
+*.ipk
+/app-build/
+compile_commands.json
