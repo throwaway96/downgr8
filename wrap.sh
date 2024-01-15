@@ -5,31 +5,23 @@
 # https://github.com/throwaway96/downgr8
 
 app_id='lol.downgr8'
-logfile='/tmp/downgr8.log'
+
+# TODO: don't hardcode this
+app_dir="/media/developer/apps/usr/palm/applications/${app_id}"
 
 toast() {
     escape1="${1//\\/\\\\}"
     escape="${escape1//\"/\\\"}"
     payload="$(printf '{"sourceId":"%s","message":"<h3>downgr8</h3>%s"}' "${app_id}" "${escape}")"
-    luna-sendpub -n 1 'luna://com.webos.notification/createToast' "${payload}"
+    luna-send-pub -n 1 'luna://com.webos.notification/createToast' "${payload}"
 }
 
 toast 'Starting...'
 
-# TODO: don't hardcode this
-main="/media/developer/apps/usr/palm/applications/lol.downgr8/main"
-pid="$(pidof 'update')"
+wrap_root="${app_dir}/wrap_root"
 
-command="$(printf "'%s' '%d' >'%s' 2>&1" "${main}" "${pid}" "${logfile}")"
-payload="$(printf '{"command":"%s"}' "${command}")"
+payload="$(printf '{"command":"'%s'"}' "${wrap_root}")"
 
-luna-send-pub -n 1 'luna://org.webosbrew.hbchannel.service/exec' "${payload}"
-
-if false; then
-    toast 'Successfully patched.'
-else
-    output="$(cat -- "${logfile}")"
-    break="${output//
-/<br>}"
-    toast "Failed. Output (see ${logfile} for more):<br>${break}</p>"
+if ! luna-send-pub -n 1 'luna://org.webosbrew.hbchannel.service/exec' "${payload}"; then
+    toast 'Failed to execute next stage.'
 fi

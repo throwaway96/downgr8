@@ -12,7 +12,7 @@ MAIN:=main
 ICON:=icon_80x80.png
 
 # files to include in the app directory
-APP_FILES=$(MAIN) appinfo.json $(ICON) wrap.sh
+APP_FILES=$(MAIN) appinfo.json $(ICON) wrap.sh wrap_root.sh
 
 # files to include in the service directory
 SVC_FILES=services.json package.json service.js
