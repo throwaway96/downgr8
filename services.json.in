@@ -1,0 +1,17 @@
+{
+  "id": "@APP_ID@.service",
+  "description": "downgr8 service",
+  "services": [
+    {
+      "name": "@APP_ID@.service",
+      "description": "downgr8 service",
+      "commands": [
+        {
+          "name": "fakeusb/getStatus",
+          "description": "(,,◕　⋏　◕,,)",
+          "public": true
+        }
+      ]
+    }
+  ]
+}

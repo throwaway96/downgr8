@@ -1,0 +1,10 @@
+{
+    "name": "@APP_ID@.service",
+    "version": "@VERSION@",
+    "description": "downgr8 service",
+    "main": "service.js",
+    "author": "throwaway96",
+    "license": "AGPL-3.0-or-later",
+    "repository": "github:throwaway96/downgr8"
+  }
+  
