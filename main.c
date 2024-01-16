@@ -22,7 +22,7 @@
 #include <sys/mman.h>
 
 static const char target[] = "luna://com.webos.service.sm/accessusb/getStatus";
-static const char replacement[] = "luna://lol.downgr8.service/fakeusb/getStatus";
+static const char replacement[] = "luna://" DEFAULT_APP_ID ".service/fakeusb/getStatus";
 
 static_assert(sizeof(replacement) <= sizeof(target), "replacement longer than target");
 
