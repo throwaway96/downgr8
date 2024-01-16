@@ -5,17 +5,14 @@
 APP_ID:=lol.downgr8
 VERSION:=0.0.1
 
-# app binary (currently called by wrap.sh)
-MAIN:=main
-
 # icon for webOS launcher
 ICON:=icon_80x80.png
 
 # files to include in the app directory
-APP_FILES=$(MAIN) appinfo.json $(ICON) wrap.sh wrap_root.sh
+APP_FILES=appinfo.json $(ICON) launch.sh
 
 # files to include in the service directory
-SVC_FILES=services.json package.json service.js
+SVC_FILES=services.json package.json service.js $(PATCH_BIN)
 
 # temporary directories used to build the IPK
 BUILD_DIR:=build
@@ -29,7 +26,6 @@ IPK:=$(APP_ID)_$(VERSION)_all.ipk
 CROSS_COMPILE:=/opt/arm-webos-linux-gnueabi_sdk-buildroot/bin/arm-webos-linux-gnueabi-
 CC=$(CROSS_COMPILE)gcc
 
-
 CFLAGS:=-pipe -std=gnu17 -Wall -Wextra -Og -ggdb -feliminate-unused-debug-types \
 	    -fdebug-prefix-map='$(dir $(PWD))=' -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 \
 		-DDEFAULT_APP_ID='"$(APP_ID)"'
@@ -41,8 +37,11 @@ LDFLAGS:=-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed
 # These are not used (yet), but --as-needed will take care of removing them.
 LIBS:=-lPmLogLib -lglib-2.0 -lpbnjson_c -lluna-service2
 
-# source files to link into main binary
-SRCS:=main.c
+# filename of patch binary (called by service)
+PATCH_BIN:=patch
+
+# source files to link into patch binary
+PATCH_SRCS:=main.c
 
 .PHONY: all
 all: $(IPK)
@@ -50,7 +49,7 @@ all: $(IPK)
 $(APP_DIR) $(SVC_DIR):
 	mkdir -p -- '$(@)'
 
-$(APP_DIR)/$(MAIN): $(SRCS) | $(APP_DIR)
+$(SVC_DIR)/$(PATCH_BIN): $(PATCH_SRCS) | $(SVC_DIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o '$@' $^ $(EXTRA_CFLAGS) $(LIBS)
 
 $(APP_DIR)/%.json $(SVC_DIR)/%.json: %.json.in Makefile | $(APP_DIR) $(SVC_DIR)

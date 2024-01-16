@@ -6,9 +6,6 @@
 
 app_id='lol.downgr8'
 
-# TODO: don't hardcode this
-app_dir="/media/developer/apps/usr/palm/applications/${app_id}"
-
 toast() {
     escape1="${1//\\/\\\\}"
     escape="${escape1//\"/\\\"}"
@@ -18,10 +15,17 @@ toast() {
 
 toast 'Starting...'
 
-wrap_root="${app_dir}/wrap_root"
+if ! luna-send-pub -n 1 "luna://${app_id}.service/elevate" '{}'; then
+    toast 'Luna call failed: elevate.'
+fi
 
-payload="$(printf '{"command":"'%s'"}' "${wrap_root}")"
+pid="$(pidof 'update')"
+payload="$(printf '{"pid":"%u"}' "${pid}")"
 
-if ! luna-send-pub -n 1 'luna://org.webosbrew.hbchannel.service/exec' "${payload}"; then
-    toast 'Failed to execute next stage.'
+if ! luna-send-pub -n 1 "luna://${app_id}.service/patch" "${payload}"; then
+    toast 'Luna call failed: patch.'
+fi
+
+if ! luna-send-pub -n 1 "luna://${app_id}.service/restart" '{}'; then
+    toast 'Luna call failed: restart.'
 fi
