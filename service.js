@@ -10,7 +10,7 @@ var pkgInfo = require("./package.json");
 var serviceId = pkgInfo.name;
 
 var Service = require("webos-service");
-var service = new Service(serviceId, undefined, { idleTimer: 30 });
+var service = new Service(serviceId, undefined, { idleTimer: 15 });
 
 var child_process = require("child_process");
 
