@@ -5,6 +5,7 @@ works on firmware versions where the [easier method](#old-method) of
 accessing expert mode has been removed. So far, little to no provision has been
 made for novice users.
 
+**Note that this tool requires you to already have root access on your TV.**
 
 ## Warning
 
