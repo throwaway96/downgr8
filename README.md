@@ -54,6 +54,18 @@ The OTAID of a firmware image is displayed when extracting it using
 [`epk2extract`](https://github.com/openlgtv/epk2extract).
 
 
+## Requirements
+
+1. TV running LG webOS 3.0+ and firmware that has the [old method](#old-method)
+   of accessing expert mode patched.
+2. Root access to your TV.
+3. [Homebrew Channel](https://github.com/webosbrew/webos-homebrew-channel)
+   installed and elevated (i.e., showing "root status: ok") on your TV.
+   
+Homebrew Channel is not strictly necessary as long as you can make sure the
+`lol.downgr8.service` service is running as root.
+
+
 ## Details
 
 In order to install older firmware versions (downgrade) or install firmware
@@ -99,6 +111,13 @@ It works because the `update` service uses the existence of the file
 `/tmp/usb-expertmode` to track whether expert mode is enabled. Since it's
 located in `/tmp`, which is writable by anyone, root access is not required to
 create it.
+
+You can check whether this has been patched on your TV by running the following
+as root:
+```sh
+strings /usr/sbin/update | fgrep -e /tmp/usb-expertmode
+```
+If you get any output, this method should still work on your TV.
 
 
 ## Recovery from failed downgrade/upgrade <a id="recovery"></a>
