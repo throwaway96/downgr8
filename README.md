@@ -7,11 +7,12 @@ made for novice users.
 
 **Note that this tool requires you to already have root access on your TV.**
 
+
 ## Warning
 
 **Use this tool at your own risk.** It has not been thoroughly tested&mdash;or,
 in some cases, tested at all. It's intended for people who already know what
-they're doing. I will probably not provide any support. 
+they're doing. I will probably not provide any support.
 
 The C part is pretty reliable, and the service seems to mostly work. However,
 the app, which consists of a script that makes a series of requests to the
@@ -35,7 +36,8 @@ or how this could affect downgrading. USB images, which are the kind you can
 download from LG's support site, seem to always contain all partitions.
 
 Make sure you are using the right firmware image for your TV. In particular,
-ensure you have the correct:  
+ensure you have the correct:
+
   1. **Version** &ndash; Keep in mind exactly what version you intend to install.
   2. **Region** &ndash; Through webOS 5, there are separate firmware images for
    each tuner type (`atsc`, `dvb`, `arib`). Starting with webOS 6, there should
@@ -46,10 +48,12 @@ ensure you have the correct:
 Every TV and firmware image have an identifier called an OTAID that encodes the
 SoC and tuner type. Don't try to install any firmware that doesn't match your
 TV's OTAID. You can get your TV's OTAID by running this command from a root
-shell:  
+shell:
+
 ```sh
 luna-send -q 'model_name' -n 1 'luna://com.webos.service.update/getCurrentSWInformation' '{}'
 ```
+
 The OTAID of a firmware image is displayed when extracting it using
 [`epk2extract`](https://github.com/openlgtv/epk2extract).
 
@@ -61,7 +65,7 @@ The OTAID of a firmware image is displayed when extracting it using
 2. Root access to your TV.
 3. [Homebrew Channel](https://github.com/webosbrew/webos-homebrew-channel)
    installed and elevated (i.e., showing "root status: ok") on your TV.
-   
+
 Homebrew Channel is not strictly necessary as long as you can make sure the
 `lol.downgr8.service` service is running as root.
 
@@ -101,10 +105,12 @@ All that remains is launching the update UI app with the correct parameters.
 
 For older firmware, this tool is not necessary because the following still
 works:  
+
 ```sh
 touch /tmp/usb-expertmode
 luna-send -n 1 'luna://com.webos.applicationManager/launch' '{"id":"com.webos.app.softwareupdate","params":{"mode":"expert","flagUpdate":true}}'
 ```
+
 This method was also never removed on webOS 1 and 2.
 
 It works because the `update` service uses the existence of the file
@@ -114,9 +120,11 @@ create it.
 
 You can check whether this has been patched on your TV by running the following
 as root:
+
 ```sh
 strings /usr/sbin/update | fgrep -e /tmp/usb-expertmode
 ```
+
 If you get any output, this method should still work on your TV.
 
 
@@ -138,6 +146,12 @@ partition on the eMMC. Partition data files can be extracted from firmware
 images using [`epk2extract`](https://github.com/openlgtv/epk2extract).
 Potential methods for transferring these files to the TV include USB drives,
 TFTP over Ethernet, and Xmodem.
+
+If you have webOS 4 or later and did not previously enable DEBUG, the only
+option for recovery is directly reprogramming the eMMC. That would involve
+either soldering wires to the board on the necessary signals (if you can find
+them; accessing them may involve scraping away soldermask) or desoldering and
+resoldering the eMMC IC.
 
 
 ## License
